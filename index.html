@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Document Converter App</title>
+</head>
+<body>
+	<h1>Document Converter App</h1>
+	
+	<form>
+		<label for="inputFormat">Input Format:</label>
+		<select id="inputFormat">
+			<option value="json">JSON</option>
+			<option value="xml">XML</option>
+		</select>
+		<br>
+		
+		<label for="outputFormat">Output Format:</label>
+		<select id="outputFormat">
+			<option value="json">JSON</option>
+			<option value="xml">XML</option>
+		</select>
+		<br>
+		
+		<label for="inputData">Input Data:</label>
+		<br>
+		<textarea id="inputData" rows="10" cols="50"></textarea>
+		<br>
+		
+		<button type="button" onclick="convert()">Convert</button>
+	</form>
+	
+	<br>
+	<label for="outputData">Output Data:</label>
+	<br>
+	<textarea id="outputData" rows="10" cols="50"></textarea>
+	
+	<script>
+		function convert() {
+			// Get input data and input/output format selections
+			var inputData = document.getElementById("inputData").value;
+			var inputFormat = document.getElementById("inputFormat").value;
+			var outputFormat = document.getElementById("outputFormat").value;
+			
+			// Convert input data to JSON object or XML document
+			var parsedData;
+			if (inputFormat === "json") {
+				parsedData = JSON.parse(inputData);
+			} else if (inputFormat === "xml") {
+				var parser = new DOMParser();
+				parsedData = parser.parseFromString(inputData, "text/xml");
+			}
+			
+			// Convert JSON object or XML document to output format
+			var outputData;
+			if (outputFormat === "json") {
+				outputData = JSON.stringify(parsedData, null, "\t");
+			} else if (outputFormat === "xml") {
+				var serializer = new XMLSerializer();
+				outputData = serializer.serializeToString(parsedData);
+			}
+			
+			// Display output data
+			document.getElementById("outputData").value = outputData;
+		}
+	</script>
+</body>
+</html>
